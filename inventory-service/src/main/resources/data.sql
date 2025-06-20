@@ -1,0 +1,16 @@
+INSERT INTO products (title, price, stock) VALUES
+('Apple iPhone 15', 999.99, 25),
+('Samsung Galaxy S24', 899.99, 30),
+('Google Pixel 8', 799.99, 20),
+('OnePlus 12', 749.99, 18),
+('Sony WH-1000XM5 Headphones', 399.99, 50),
+('Dell XPS 13 Laptop', 1199.99, 12),
+('Apple MacBook Air M3', 1299.99, 15),
+('Logitech MX Master 3 Mouse', 99.99, 40),
+('Canon EOS R10 Camera', 999.99, 10),
+('Amazon Echo Dot 5th Gen', 49.99, 60),
+('Samsung Galaxy Tab S9', 699.99, 22),
+('Apple iPad Pro 11"', 1099.99, 14),
+('Bose QuietComfort Earbuds II', 279.99, 35),
+('ASUS ROG Gaming Laptop', 1599.99, 8),
+('Kindle Paperwhite 11th Gen', 139.99, 45);
