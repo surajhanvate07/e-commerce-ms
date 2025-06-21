@@ -40,7 +40,7 @@ public class OrderService {
 		return modelMapper.map(order, OrderRequestDto.class);
 	}
 
-//	@Retry(name = "inventoryRetry", fallbackMethod = "createOrderFallback")
+	//	@Retry(name = "inventoryRetry", fallbackMethod = "createOrderFallback")
 	@CircuitBreaker(name = "inventoryCircuitBreaker", fallbackMethod = "createOrderFallback")
 	@RateLimiter(name = "inventoryRateLimiter", fallbackMethod = "createOrderFallback")
 	public OrderRequestDto createOrder(OrderRequestDto orderRequestDto) {
@@ -61,5 +61,23 @@ public class OrderService {
 	public OrderRequestDto createOrderFallback(OrderRequestDto orderRequestDto, Throwable throwable) {
 		log.error("Failed to create order {} :", throwable.getLocalizedMessage());
 		return new OrderRequestDto();
+	}
+
+	@Retry(name = "inventoryRetry", fallbackMethod = "cancelOrderFallback")
+	public String cancelOrder(Long id) {
+		log.info("Cancelling order with ID: {}", id);
+		Orders order = orderRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Order not found with ID: " + id));
+		order.setOrderStatus(OrderStatus.CANCELLED);
+		Orders cancelledOrder = orderRepository.save(order);
+		OrderRequestDto cancelledOrderRequestDto = modelMapper.map(cancelledOrder, OrderRequestDto.class);
+		log.info("Updating stock for {}", cancelledOrderRequestDto);
+		Integer addedStock = inventoryFeignClient.addStock(cancelledOrderRequestDto);
+		return "Order is cancelled and new stock is added: " + addedStock;
+	}
+
+	public String cancelOrderFallback(Long id, Throwable throwable) {
+		log.error("Failed to cancel order {} :", throwable.getLocalizedMessage());
+		return "Failed to cancel order. Please try again later.";
 	}
 }

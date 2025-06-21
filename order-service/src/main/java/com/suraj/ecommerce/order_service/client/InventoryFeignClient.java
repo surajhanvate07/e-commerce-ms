@@ -10,4 +10,7 @@ public interface InventoryFeignClient {
 
 	@PutMapping("/products/reduce-stock")
 	Double reduceStock(@RequestBody OrderRequestDto orderRequestDto);
+
+	@PutMapping("/products/add-stock")
+	Integer addStock(@RequestBody OrderRequestDto orderRequestDto);
 }

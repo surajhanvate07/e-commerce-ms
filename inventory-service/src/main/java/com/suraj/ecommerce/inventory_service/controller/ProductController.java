@@ -57,4 +57,11 @@ public class ProductController {
 		Double totalPrice = productService.reduceStock(orderRequestDto);
 		return ResponseEntity.status(HttpStatus.OK).body(totalPrice);
 	}
+
+	@PutMapping("/add-stock")
+	public ResponseEntity<Integer> addStock(@RequestBody OrderRequestDto orderRequestDto) {
+		log.info("Adding stock for product: {}", orderRequestDto);
+		Integer updated = productService.addStock(orderRequestDto);
+		return ResponseEntity.ok(updated);
+	}
 }

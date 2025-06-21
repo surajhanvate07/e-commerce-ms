@@ -60,4 +60,21 @@ public class ProductService {
 		}
 		return totalPrice;
 	}
+
+	@Transactional
+	public Integer addStock(OrderRequestDto orderRequestDto) {
+		log.info("Adding stock for order request: {}", orderRequestDto);
+		Integer totalStockAdded = 0;
+		for (OrderRequestItemDto item : orderRequestDto.getItems()) {
+			Long productId = item.getProductId();
+			Integer quantity = item.getQuantity();
+			Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+			product.setStock(product.getStock() + quantity);
+			totalStockAdded += quantity;
+			productRepository.save(product);
+			log.info("Updated stock for product ID: {}, new stock: {}", productId, product.getStock());
+		}
+
+		return totalStockAdded;
+	}
 }

@@ -4,6 +4,7 @@ import com.suraj.ecommerce.order_service.client.InventoryFeignClient;
 import com.suraj.ecommerce.order_service.dto.OrderRequestDto;
 import com.suraj.ecommerce.order_service.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,12 @@ public class OrdersController {
 	public ResponseEntity<OrderRequestDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
 		OrderRequestDto orderRequest = orderService.createOrder(orderRequestDto);
 		return ResponseEntity.ok(orderRequest);
+	}
+
+	@PostMapping("/cancel-order/{id}")
+	public ResponseEntity<String> cancelOrder(@PathVariable Long id) {
+		String cancelledOrderResponse = orderService.cancelOrder(id);
+		return ResponseEntity.ok(cancelledOrderResponse);
 	}
 
 	@GetMapping
