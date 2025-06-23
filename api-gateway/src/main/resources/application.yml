@@ -11,12 +11,13 @@ spring:
             - Path=/api/v1/orders/**
           filters:
             - StripPrefix=2
+            - name: OrdersLoggingFilter
         - id: inventory-service
           uri: lb://INVENTORY-SERVICE
           predicates:
             - Path=/api/v1/inventory/**
           filters:
-              - StripPrefix=2
+            - StripPrefix=2
 
 eureka:
   client:

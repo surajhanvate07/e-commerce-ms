@@ -1,10 +1,8 @@
 package com.suraj.ecommerce.order_service.controller;
 
-import com.suraj.ecommerce.order_service.client.InventoryFeignClient;
 import com.suraj.ecommerce.order_service.dto.OrderRequestDto;
 import com.suraj.ecommerce.order_service.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
