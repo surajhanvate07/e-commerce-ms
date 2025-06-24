@@ -16,9 +16,11 @@ public class GlobalLoggingFilter implements GlobalFilter, Ordered {
 
 		// Pre-filer
 		log.info("Logging from Global Pre: {}", exchange.getRequest().getURI());
-		return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-			log.info("Logging from Global Post: {}", exchange.getResponse().getStatusCode());
-		}));
+		return chain.filter(exchange)
+				.doOnError(error -> log.error("Exception in downstream processing", error))
+				.then(Mono.fromRunnable(() -> {
+					log.info("Logging from Global Post: {}", exchange.getResponse().getStatusCode());
+				}));
 	}
 
 	@Override
